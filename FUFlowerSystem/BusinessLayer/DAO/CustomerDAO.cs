@@ -51,12 +51,26 @@ namespace BusinessLayer.DAO
             return customer;
         }
 
-        public Customer CheckLogin(string email)
+        public IEnumerable<Customer> Search(string search)
+        {
+            List<Customer> list;
+            try
+            {
+                list = _context.Customers.Where(c => c.CustomerName.Equals(search)).ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return list;
+        }
+
+        public Customer CheckLogin(string email, string password)
         {
             Customer? customer;
             try
             {
-                customer = _context.Customers.FirstOrDefault(c => c.Email.Equals(email));
+                customer = _context.Customers.FirstOrDefault(c => c.Email == email && c.Password == password);
             }
             catch (Exception)
             {
@@ -93,7 +107,8 @@ namespace BusinessLayer.DAO
                 Customer c = Get(customer.CustomerId);
                 if (c != null)
                 {
-                    _context.Entry<Customer>(customer).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    _context.Entry<Customer>(c).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
+                    _context.Update(customer);
                     _context.SaveChanges();
                     result = true;
                 }
