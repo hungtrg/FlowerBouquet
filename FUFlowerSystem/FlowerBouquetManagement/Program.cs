@@ -7,7 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<FuflowerSystemDbContextContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("FUFlowerSystemDbContext")));
-//builder.Services.AddRazorPages().AddRazorPagesOptions(opt => opt.Conventions.AddPageRoute("/Login", ""));
 builder.Services.AddSingleton<ICustomerRepository, CustomerRepository>();
 
 builder.Services.AddSession(opt =>

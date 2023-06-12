@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33717.318
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "DataLayer\DataLayer.csproj", "{BD879F3B-0D13-4AFF-8504-64DB97A27C76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLayer", "DataLayer\DataLayer.csproj", "{BD879F3B-0D13-4AFF-8504-64DB97A27C76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLayer", "BusinessLayer\BusinessLayer.csproj", "{330A5DC5-BFD2-4868-AB5C-5AB5D8AF5706}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLayer", "BusinessLayer\BusinessLayer.csproj", "{330A5DC5-BFD2-4868-AB5C-5AB5D8AF5706}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowerBouquetManagement", "FlowerBouquetManagement\FlowerBouquetManagement.csproj", "{7891061B-8E55-47C2-929C-B2A1AFB35F65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlowerBouquetManagement", "FlowerBouquetManagement\FlowerBouquetManagement.csproj", "{7891061B-8E55-47C2-929C-B2A1AFB35F65}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
