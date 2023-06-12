@@ -50,7 +50,10 @@ public partial class FuflowerSystemDbContextContext : DbContext
         {
             entity.ToTable("Customer");
 
-            entity.Property(e => e.CustomerId).ValueGeneratedNever();
+            entity.HasKey(e => e.CustomerId);
+            entity.Property(e => e.CustomerId)
+            .UseIdentityColumn().HasColumnName("CustomerId").ValueGeneratedOnAdd();
+
             entity.Property(e => e.Bithday).HasColumnType("date");
             entity.Property(e => e.City).HasMaxLength(50);
             entity.Property(e => e.Country).HasMaxLength(50);
@@ -84,7 +87,10 @@ public partial class FuflowerSystemDbContextContext : DbContext
         {
             entity.ToTable("Order");
 
-            entity.Property(e => e.OrderId).ValueGeneratedNever();
+            entity.HasKey(e => e.OrderId);
+            entity.Property(e => e.OrderId)
+            .UseIdentityColumn().HasColumnName("OrderId").ValueGeneratedOnAdd();
+
             entity.Property(e => e.DeliveryDate).HasColumnType("date");
             entity.Property(e => e.Freight).HasMaxLength(50);
             entity.Property(e => e.OrderDate).HasColumnType("date");

@@ -56,7 +56,7 @@ namespace BusinessLayer.DAO
             List<Customer> list;
             try
             {
-                list = _context.Customers.Where(c => c.CustomerName.Equals(search)).ToList();
+                list = _context.Customers.Where(c => c.CustomerName.Contains(search)).ToList();
             }
             catch (Exception)
             {

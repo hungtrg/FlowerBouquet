@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using DataLayer.Models;
 using BusinessLayer.Repository;
 
 namespace FlowerBouquetManagement.Pages.Customer
@@ -35,8 +29,17 @@ namespace FlowerBouquetManagement.Pages.Customer
             {
                 return Page();
             }
+            var customer = new DataLayer.Models.Customer
+            {
+                CustomerName = Customer.CustomerName,
+                Email = Customer.Email,
+                City = Customer.City,
+                Country = Customer.Country,
+                Password = Customer.Password,
+                Bithday = Customer.Bithday
+            };
 
-            _repo.AddCustomer(Customer);
+            _repo.AddCustomer(customer);
 
             return RedirectToPage("./Index");
         }
