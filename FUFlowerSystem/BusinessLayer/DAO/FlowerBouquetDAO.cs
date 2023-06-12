@@ -29,7 +29,7 @@ namespace BusinessLayer.DAO
             List<FlowerBouquet> list;
             try
             {
-                list = _context.FlowerBouquets.ToList();
+                list = _context.FlowerBouquets.Include(f => f.Category).Include(f => f.Supplier).ToList();
             }
             catch (Exception)
             {
@@ -56,7 +56,8 @@ namespace BusinessLayer.DAO
             List<FlowerBouquet> list;
             try
             {
-                list = _context.FlowerBouquets.Where(f => f.FlowerBouquetName.Contains(search)).ToList();
+                list = _context.FlowerBouquets.Where(f => f.FlowerBouquetName.Contains(search))
+                    .Include(f => f.Category).Include(f => f.Supplier).ToList();
             }
             catch (Exception)
             {
@@ -92,7 +93,8 @@ namespace BusinessLayer.DAO
                 FlowerBouquet f = Get(flower.FlowerBouquetId);
                 if (f != null)
                 {
-                    _context.Entry<FlowerBouquet>(flower).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    _context.Entry<FlowerBouquet>(f).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
+                    _context.Update(flower);
                     _context.SaveChanges();
                     result = true;
                 }
@@ -131,6 +133,34 @@ namespace BusinessLayer.DAO
                 throw;
             }
             return result;
+        }
+
+        public IEnumerable<Category> GetCategories()
+        {
+            List<Category> list;
+            try
+            {
+                list = _context.Categories.ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return list;
+        }
+
+        public IEnumerable<Supplier> GetSuppliers()
+        {
+            List<Supplier> list;
+            try
+            {
+                list = _context.Suppliers.ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return list;
         }
     }
 }

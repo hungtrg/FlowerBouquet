@@ -10,6 +10,8 @@ namespace BusinessLayer.Repository
         bool AddFlowerBouquet(FlowerBouquet flower);
         bool UpdateFlowerBouquet(FlowerBouquet flower);
         bool RemoveFlowerBouquet(int id);
+        IEnumerable<Category> GetCategories();
+        IEnumerable<Supplier> GetSuppliers();
     }
 
     public class FlowerBouquetRepository : IFlowerBouquetRepository
@@ -19,6 +21,10 @@ namespace BusinessLayer.Repository
         public FlowerBouquet Get(int id) => FlowerBouquetDAO.Instance.Get(id);
 
         public IEnumerable<FlowerBouquet> GetAll() => FlowerBouquetDAO.Instance.GetAll();
+
+        public IEnumerable<Category> GetCategories() => FlowerBouquetDAO.Instance.GetCategories();
+
+        public IEnumerable<Supplier> GetSuppliers() => FlowerBouquetDAO.Instance.GetSuppliers();
 
         public bool RemoveFlowerBouquet(int id) => FlowerBouquetDAO.Instance.RemoveFlowerBouquet(id);
 
