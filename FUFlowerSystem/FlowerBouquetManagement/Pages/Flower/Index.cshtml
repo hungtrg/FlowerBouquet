@@ -5,13 +5,17 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Flower List</h1>
-
 <form method="get" class="form-inline mb-3">
     <div class="row mb-3">
-        <div class="col-auto">
-            <a asp-page="Create" class="btn btn-primary">Create New</a>
+        <div class="col-4">
+            <h2>Flower List</h2>
         </div>
+        @if (Model.role == "ADMIN")
+        {
+            <div class="col-auto">
+                <a asp-page="Create" class="btn btn-primary">Create New</a>
+            </div>
+        }
         <div class="col-5">
             <input class="form-control" type="text" placeholder="Search..." aria-label="Search" asp-for="search">
         </div>
@@ -79,11 +83,20 @@ else
                     <td>
                         @Html.DisplayFor(modelItem => item.Status)
                     </td>
-                    <td>
-                        <a asp-page="./Edit" asp-route-id="@item.FlowerBouquetId" class="btn btn-sm btn-primary mr-1">Edit</a>
-                        <a asp-page="./Details" asp-route-id="@item.FlowerBouquetId" class="btn btn-sm btn-info mr-1">Details</a>
-                        <a asp-page="./Delete" asp-route-id="@item.FlowerBouquetId" class="btn btn-sm btn-danger mr-1">Delete</a>
-                    </td>
+                    @if (Model.role == "ADMIN")
+                    {
+                        <td>
+                            <a asp-page="./Edit" asp-route-id="@item.FlowerBouquetId" class="btn btn-sm btn-primary mr-1">Edit</a>
+                            <a asp-page="./Details" asp-route-id="@item.FlowerBouquetId" class="btn btn-sm btn-info mr-1">Details</a>
+                            <a asp-page="./Delete" asp-route-id="@item.FlowerBouquetId" class="btn btn-sm btn-danger mr-1">Delete</a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <a asp-page="#" asp-route-id="@item.FlowerBouquetId" class="btn btn-sm btn-primary mr-1">Add to cart</a>
+                        </td>
+                    }
                 </tr>
             }
         </tbody>

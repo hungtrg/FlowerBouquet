@@ -16,9 +16,11 @@ namespace FlowerBouquetManagement.Pages.Flower
         public IList<FlowerBouquet> FlowerBouquet { get; set; } = default!;
 
         public string search;
+        public string role;
 
         public async Task OnGetAsync(string search)
         {
+            role = HttpContext.Session.GetString("ROLE");
             if (!string.IsNullOrEmpty(search))
             {
                 FlowerBouquet = _repo.Search(search).ToList();
