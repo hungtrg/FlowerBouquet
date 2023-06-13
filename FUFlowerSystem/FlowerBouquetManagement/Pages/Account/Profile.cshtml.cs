@@ -18,8 +18,7 @@ namespace FlowerBouquetManagement.Pages.Account
 
         public async Task<IActionResult> OnGetAsync()
         {
-            string role = HttpContext.Session.GetString("ROLE");
-            int id = 1;
+            int id = (int)HttpContext.Session.GetInt32("USERID");
             if (id == null || _repo.GetAll == null)
             {
                 return NotFound();

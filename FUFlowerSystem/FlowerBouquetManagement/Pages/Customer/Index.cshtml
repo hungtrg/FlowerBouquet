@@ -5,12 +5,13 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Customer List</h1>
-
 <form method="get" class="form-inline mb-3">
     <div class="row mb-3">
+        <div class="col-4">
+            <h2>Customer List</h2>
+        </div>
         <div class="col-auto">
-            <a asp-page="Create" class="btn btn-primary">Create New</a>
+            <a asp-page="Create" class="btn btn-outline-primary">Create New</a>
         </div>
         <div class="col-5">
             <input class="form-control" type="text" placeholder="Search..." aria-label="Search" asp-for="search">
@@ -68,9 +69,9 @@ else
                         @Html.DisplayFor(modelItem => item.Bithday)
                     </td>
                     <td>
-                        <a asp-page="./Edit" asp-route-id="@item.CustomerId" class="btn btn-sm btn-primary mr-1">Edit</a>
-                        <a asp-page="./Details" asp-route-id="@item.CustomerId" class="btn btn-sm btn-info mr-1">Details</a>
-                        <a asp-page="./Delete" asp-route-id="@item.CustomerId" class="btn btn-sm btn-danger mr-1">Delete</a>
+                        <a asp-page="./Edit" asp-route-id="@item.CustomerId" class="btn btn-sm btn-outline-primary mr-1">Edit</a>
+                        <a asp-page="./Details" asp-route-id="@item.CustomerId" class="btn btn-sm btn-outline-info mr-1">Details</a>
+                        <a asp-page="./Delete" asp-route-id="@item.CustomerId" class="btn btn-sm btn-outline-danger mr-1">Delete</a>
                     </td>
                 </tr>
             }

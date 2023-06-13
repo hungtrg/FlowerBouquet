@@ -10,10 +10,10 @@
         <div class="col-4">
             <h2>Flower List</h2>
         </div>
-        @if (Model.role == "ADMIN")
+        @if (Model.role != "ADMIN")
         {
             <div class="col-auto">
-                <a asp-page="Create" class="btn btn-primary">Create New</a>
+                <a asp-page="Create" class="btn btn-outline-primary">Create New</a>
             </div>
         }
         <div class="col-5">
