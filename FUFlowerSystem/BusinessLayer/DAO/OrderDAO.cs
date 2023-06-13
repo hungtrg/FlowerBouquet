@@ -1,4 +1,5 @@
 ﻿using DataLayer.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLayer.DAO
 {
@@ -28,7 +29,22 @@ namespace BusinessLayer.DAO
             List<Order> list;
             try
             {
-                list = _context.Orders.ToList();
+                list = _context.Orders.Include(o => o.Customer).Include(o => o.OrderDetails).ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return list;
+        }
+
+        public IEnumerable<Order> Search(string search)
+        {
+            List<Order> list;
+            try
+            {
+                list = _context.Orders.Include(o => o.Customer).Include(o => o.OrderDetails)
+                    .Where(o => o.Customer.CustomerName.Contains(search)).ToList();
             }
             catch (Exception)
             {
@@ -79,7 +95,8 @@ namespace BusinessLayer.DAO
                 Order o = Get(order.OrderId);
                 if (o != null)
                 {
-                    _context.Entry<Order>(order).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    _context.Entry<Order>(o).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
+                    _context.Update(order);
                     _context.SaveChanges();
                     result = true;
                 }

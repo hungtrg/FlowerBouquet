@@ -114,7 +114,7 @@ namespace BusinessLayer.DAO
                 FlowerBouquet f = Get(id);
                 if (f != null)
                 {
-                    var associatedOrders = _context.Orders.Where(o => o.FlowerBouquetId == id).ToList();
+                    var associatedOrders = _context.OrderDetails.Where(o => o.FlowerBouquetId == id).ToList();
                     if (associatedOrders.Any())
                     {
                         f.Status = false;
@@ -122,7 +122,7 @@ namespace BusinessLayer.DAO
                     }
                     else
                     {
-                        _context.Remove(f);
+                        _context.FlowerBouquets.Remove(f);
                     }
                     _context.SaveChanges();
                     result = true;

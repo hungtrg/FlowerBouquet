@@ -1,0 +1,91 @@
+﻿@page
+@model FlowerBouquetManagement.Pages.Order.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Flower List</h1>
+
+<form method="get" class="form-inline mb-3">
+    <div class="row mb-3">
+        <div class="col-auto">
+            <a asp-page="Create" class="btn btn-primary">Create New</a>
+        </div>
+        <div class="col-5">
+            <input class="form-control" type="text" placeholder="Search..." aria-label="Search" asp-for="search">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-outline-secondary">Search</button>
+        </div>
+    </div>
+</form>
+
+@if (Model.Order.Count == 0)
+{
+    <div class="alert alert-warning">No orders found.</div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Order[0].OrderId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Order[0].Customer)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Order[0].OrderDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Order[0].DeliveryDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Order[0].Freight)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Order[0].Total)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Order[0].Status)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Order)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Customer.CustomerName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DeliveryDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Freight)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Total)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.OrderId" class="btn btn-sm btn-primary mr-1">Edit</a>
+                        <a asp-page="./Details" asp-route-id="@item.OrderId" class="btn btn-sm btn-info mr-1">Details</a>
+                        <a asp-page="./Delete" asp-route-id="@item.OrderId" class="btn btn-sm btn-danger mr-1">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

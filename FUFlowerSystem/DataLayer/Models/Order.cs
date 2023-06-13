@@ -9,8 +9,6 @@ public partial class Order
 
     public int? CustomerId { get; set; }
 
-    public int? FlowerBouquetId { get; set; }
-
     public DateTime? OrderDate { get; set; }
 
     public DateTime? DeliveryDate { get; set; }

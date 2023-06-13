@@ -6,6 +6,7 @@ namespace BusinessLayer.Repository
     public interface IOrderRepository
     {
         IEnumerable<Order> GetAll();
+        IEnumerable<Order> Search(string search);
         Order Get(int id);
         bool AddOrder(Order order);
         bool UpdateOrder(Order order);
@@ -21,6 +22,8 @@ namespace BusinessLayer.Repository
         public IEnumerable<Order> GetAll() => OrderDAO.Instance.GetAll();
 
         public bool RemoveOrder(int id) => OrderDAO.Instance.RemoveOrder(id);
+
+        public IEnumerable<Order> Search(string search) => OrderDAO.Instance.Search(search);
 
         public bool UpdateOrder(Order order) => OrderDAO.Instance.UpdateOrder(order);
     }

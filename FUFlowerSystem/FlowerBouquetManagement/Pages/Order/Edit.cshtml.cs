@@ -1,22 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using DataLayer.Models;
 using BusinessLayer.Repository;
 
-namespace FlowerBouquetManagement.Pages.Flower
+namespace FlowerBouquetManagement.Pages.Order
 {
     public class EditModel : PageModel
     {
-        private readonly IFlowerBouquetRepository _repo;
+        private readonly IOrderRepository _repo;
 
-        public EditModel(IFlowerBouquetRepository repo)
+        public EditModel(IOrderRepository repo)
         {
             _repo = repo;
         }
 
         [BindProperty]
-        public FlowerBouquet FlowerBouquet { get; set; } = default!;
+        public DataLayer.Models.Order Order { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -25,14 +24,13 @@ namespace FlowerBouquetManagement.Pages.Flower
                 return NotFound();
             }
 
-            var flowerbouquet = _repo.Get((int)id);
-            if (flowerbouquet == null)
+            var order = _repo.Get((int)id);
+            if (order == null)
             {
                 return NotFound();
             }
-            FlowerBouquet = flowerbouquet;
-            ViewData["CategoryId"] = new SelectList(_repo.GetCategories().ToList(), "CategoryId", "CategoryName");
-            ViewData["SupplierId"] = new SelectList(_repo.GetSuppliers().ToList(), "SupplierId", "SupplierName");
+            Order = order;
+            ViewData["CustomerId"] = new SelectList(_repo.GetAll(), "CustomerId", "CustomerId");
             return Page();
         }
 
@@ -45,7 +43,7 @@ namespace FlowerBouquetManagement.Pages.Flower
                 return Page();
             }
 
-            _repo.UpdateFlowerBouquet(FlowerBouquet);
+            _repo.UpdateOrder(Order);
 
             return RedirectToPage("./Index");
         }

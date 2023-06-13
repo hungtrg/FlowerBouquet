@@ -9,6 +9,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<FuflowerSystemDbContextContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("FUFlowerSystemDbContext")));
 builder.Services.AddSingleton<ICustomerRepository, CustomerRepository>();
 builder.Services.AddSingleton<IFlowerBouquetRepository, FlowerBouquetRepository>();
+builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
 
 builder.Services.AddSession(opt =>
 {
