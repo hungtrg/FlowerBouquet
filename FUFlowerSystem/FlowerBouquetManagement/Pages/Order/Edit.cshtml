@@ -5,46 +5,42 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>Order</h4>
+<h1>Edit Order</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Order.OrderId" />
-            <div class="form-group">
-                <label asp-for="Order.CustomerId" class="control-label"></label>
-                <select asp-for="Order.CustomerId" class="form-control" asp-items="ViewBag.CustomerId"></select>
-                <span asp-validation-for="Order.CustomerId" class="text-danger"></span>
-            </div>
+            <input type="hidden" asp-for="Order.CustomerId" />
             <div class="form-group">
                 <label asp-for="Order.OrderDate" class="control-label"></label>
-                <input asp-for="Order.OrderDate" class="form-control" />
+                <input asp-for="Order.OrderDate" class="form-control" readonly/>
                 <span asp-validation-for="Order.OrderDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Order.DeliveryDate" class="control-label"></label>
-                <input asp-for="Order.DeliveryDate" class="form-control" />
-                <span asp-validation-for="Order.DeliveryDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Order.Freight" class="control-label"></label>
-                <input asp-for="Order.Freight" class="form-control" />
+                <input asp-for="Order.Freight" class="form-control" readonly/>
                 <span asp-validation-for="Order.Freight" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Order.Total" class="control-label"></label>
-                <input asp-for="Order.Total" class="form-control" />
+                <input asp-for="Order.Total" class="form-control" readonly/>
                 <span asp-validation-for="Order.Total" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Order.Status" class="control-label"></label>
-                <input asp-for="Order.Status" class="form-control" />
-                <span asp-validation-for="Order.Status" class="text-danger"></span>
+                <label asp-for="Order.DeliveryDate" class="control-label"></label>
+                <input asp-for="Order.DeliveryDate" class="form-control" required/>
+                <span asp-validation-for="Order.DeliveryDate" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Order.Status" class="control-label"></label>
+                <select asp-for="Order.Status" class="form-control" required>
+                    <option value="True">Active</option>
+                    <option value="False">Inactive</option>
+                </select>
+            </div>
+            <div class="form-group mt-2">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>

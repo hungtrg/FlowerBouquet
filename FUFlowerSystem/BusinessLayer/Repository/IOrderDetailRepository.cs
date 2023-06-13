@@ -5,7 +5,7 @@ namespace BusinessLayer.Repository
 {
     public interface IOrderDetailRepository
     {
-        IEnumerable<OrderDetail> GetAll();
+        IEnumerable<OrderDetail> GetAll(int oId);
         OrderDetail Get(int oId, int fId);
         bool AddOrderDetail(OrderDetail order);
         bool UpdateOrderDetail(OrderDetail order);
@@ -18,7 +18,7 @@ namespace BusinessLayer.Repository
 
         public OrderDetail Get(int oId, int fId) => OrderDetailDAO.Instance.Get(oId,fId);
 
-        public IEnumerable<OrderDetail> GetAll() => OrderDetailDAO.Instance.GetAll();
+        public IEnumerable<OrderDetail> GetAll(int oId) => OrderDetailDAO.Instance.GetAll(oId);
 
         public bool RemoveOrderDetail(OrderDetail order) => OrderDetailDAO.Instance.RemoveOrderDetail(order);
 

@@ -5,12 +5,12 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Flower List</h1>
+
 
 <form method="get" class="form-inline mb-3">
     <div class="row mb-3">
         <div class="col-auto">
-            <a asp-page="Create" class="btn btn-primary">Create New</a>
+            <h2>Flower List</h2>
         </div>
         <div class="col-5">
             <input class="form-control" type="text" placeholder="Search..." aria-label="Search" asp-for="search">
@@ -27,7 +27,7 @@
 }
 else
 {
-    <table class="table">
+    <table class="table text-lg-center">
         <thead>
             <tr>
                 <th>
@@ -40,13 +40,13 @@ else
                     @Html.DisplayNameFor(model => model.Order[0].OrderDate)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Order[0].DeliveryDate)
-                </th>
-                <th>
                     @Html.DisplayNameFor(model => model.Order[0].Freight)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Order[0].Total)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Order[0].DeliveryDate)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Order[0].Status)
@@ -68,13 +68,13 @@ else
                         @Html.DisplayFor(modelItem => item.OrderDate)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.DeliveryDate)
-                    </td>
-                    <td>
                         @Html.DisplayFor(modelItem => item.Freight)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Total)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DeliveryDate)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Status)
@@ -82,7 +82,6 @@ else
                     <td>
                         <a asp-page="./Edit" asp-route-id="@item.OrderId" class="btn btn-sm btn-primary mr-1">Edit</a>
                         <a asp-page="./Details" asp-route-id="@item.OrderId" class="btn btn-sm btn-info mr-1">Details</a>
-                        <a asp-page="./Delete" asp-route-id="@item.OrderId" class="btn btn-sm btn-danger mr-1">Delete</a>
                     </td>
                 </tr>
             }

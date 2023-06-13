@@ -10,6 +10,7 @@ builder.Services.AddDbContext<FuflowerSystemDbContextContext>(opt => opt.UseSqlS
 builder.Services.AddSingleton<ICustomerRepository, CustomerRepository>();
 builder.Services.AddSingleton<IFlowerBouquetRepository, FlowerBouquetRepository>();
 builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
+builder.Services.AddSingleton<IOrderDetailRepository, OrderDetailRepository>();
 
 builder.Services.AddSession(opt =>
 {

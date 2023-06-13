@@ -1,4 +1,5 @@
 ﻿using DataLayer.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLayer.DAO
 {
@@ -23,12 +24,12 @@ namespace BusinessLayer.DAO
             }
         }
 
-        public IEnumerable<OrderDetail> GetAll()
+        public IEnumerable<OrderDetail> GetAll(int id)
         {
             List<OrderDetail> list;
             try
             {
-                list = _context.OrderDetails.ToList();
+                list = _context.OrderDetails.Where(od => od.OrderId.Equals(id)).Include(od => od.Order).Include(od => od.FlowerBouquet).ToList();
             }
             catch (Exception)
             {

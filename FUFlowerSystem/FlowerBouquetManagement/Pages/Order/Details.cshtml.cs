@@ -1,38 +1,27 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using DataLayer.Models;
 using BusinessLayer.Repository;
 
 namespace FlowerBouquetManagement.Pages.Order
 {
     public class DetailsModel : PageModel
     {
-        private readonly IOrderRepository _repo;
+        private readonly IOrderDetailRepository _repo;
 
-        public DetailsModel(IOrderRepository repo)
+        public DetailsModel(IOrderDetailRepository repo)
         {
             _repo = repo;
         }
 
-        public DataLayer.Models.Order Order { get; set; } = default!; 
+        public IList<OrderDetail> OrderDetail { get;set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task OnGetAsync(int id)
         {
-            if (id == null || _repo.GetAll == null)
+            if (id == null || OrderDetail == null)
             {
-                return NotFound();
+                //return NotFound();
             }
-
-            var order = _repo.Get((int)id);
-
-            if (order == null)
-            {
-                return NotFound();
-            }
-            else 
-            {
-                Order = order;
-            }
-            return Page();
+            OrderDetail = _repo.GetAll(id).ToList();
         }
     }
 }
