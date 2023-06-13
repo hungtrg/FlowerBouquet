@@ -56,6 +56,13 @@
     </dl>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.FlowerBouquet?.FlowerBouquetId">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Index" class="btn btn-sm btn-outline-dark mr-1">Back to List</a> |
+    @if (HttpContext.Session.GetString("ROLE") == "ADMIN")
+    {
+        <a asp-page="./Edit" asp-route-id="@Model.FlowerBouquet?.FlowerBouquetId" class="btn btn-sm btn-outline-primary mr-1">Edit</a>
+    }
+    else
+    {
+        <a asp-page="#" asp-route-id="@Model.FlowerBouquet?.FlowerBouquetId" class="btn btn-sm btn-outline-primary mr-1">Add to cart</a>
+    }
 </div>
