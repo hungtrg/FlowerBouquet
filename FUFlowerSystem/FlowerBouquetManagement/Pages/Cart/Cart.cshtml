@@ -1,0 +1,70 @@
+﻿@page
+@model FlowerBouquetManagement.Pages.Cart.CartModel
+
+@{
+    ViewData["Title"] = "Cart";
+    var count = 1;
+    decimal discount = 0;
+    decimal total = 0;
+}
+
+<h1>Cart</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Items
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart[0].FlowerBouquet)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart[0].Quanity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart[0].Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart[0].Discount)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Cart)
+        {
+            <tr>
+                <td>
+                    @count
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.FlowerName[count - 1])
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quanity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Discount)
+                </td>
+            </tr>
+            count++;
+            @if (item.Discount != null)
+            {
+                discount = item.Discount.Value;
+            }
+            total += (item.Price.Value - discount) * item.Quanity.Value;
+        }
+        <tr class="bg-light">
+            <td></td>
+            <td></td>
+            <th>Total: </th>
+            <th>@total$</th>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+<a asp-page="../Flower/Index" class="btn btn-sm btn-outline-secondary mr-1">Continue shopping</a>

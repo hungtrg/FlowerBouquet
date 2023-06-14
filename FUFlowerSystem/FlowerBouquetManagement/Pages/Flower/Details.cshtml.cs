@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using BusinessLayer.Repository;
+using BusinessLayer.UtilExtensions;
 using DataLayer.Models;
-using BusinessLayer.Repository;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FlowerBouquetManagement.Pages.Flower
 {
@@ -14,7 +16,9 @@ namespace FlowerBouquetManagement.Pages.Flower
             _repo = repo;
         }
 
-        public FlowerBouquet FlowerBouquet { get; set; } = default!; 
+        [BindProperty]
+        public ProductInput Input { get; set; }
+        public FlowerBouquet FlowerBouquet { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -33,6 +37,62 @@ namespace FlowerBouquetManagement.Pages.Flower
                 FlowerBouquet = flower;
             }
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync(int? id)
+        {
+            var flower = _repo.Get((int)id);
+            var cart = UtilExtensions.GetObjectFromJson<List<OrderDetail>>(HttpContext.Session, "CART");
+
+            // Determine if are there any item in the user's cart or not
+            if (cart.IsNullOrEmpty())
+            {
+                cart = new List<OrderDetail>();
+                cart.Add(new OrderDetail
+                {
+                    FlowerBouquetId = flower.FlowerBouquetId,
+                    Price = flower.Price,
+                    Quanity = Input.Quantity,
+                    Discount = 0
+                });
+                UtilExtensions.SetObjectAsJson(HttpContext.Session, "CART", cart);
+            }
+            else
+            {
+                var checkCart = Exists(cart, flower.FlowerBouquetId);
+                if (checkCart.Equals(-1))
+                {
+                    cart.Add(new OrderDetail
+                    {
+                        FlowerBouquetId = flower.FlowerBouquetId,
+                        Price = flower.Price,
+                        Quanity = Input.Quantity,
+                        Discount = 0,
+                    });
+                }
+                else
+                {
+                    cart[checkCart].Quanity += Input.Quantity;
+                }
+                UtilExtensions.SetObjectAsJson(HttpContext.Session, "CART", cart);
+            }
+            return Redirect("../Cart/Cart");
+        }
+
+        // Determine if the selected item is in the user's cart or not
+        private int Exists(List<OrderDetail> cart, int id)
+        {
+            if (cart != null)
+            {
+                for (int i = 0; i < cart.Count; i++)
+                {
+                    if (cart[i].FlowerBouquetId.Equals(id))
+                    {
+                        return i;
+                    }
+                }
+            }
+            return -1;
         }
     }
 }

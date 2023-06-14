@@ -5,62 +5,73 @@
     ViewData["Title"] = "Details";
 }
 
-<div>
-    <h3>Details</h3>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FlowerBouquet.Category)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FlowerBouquet.Category.CategoryName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FlowerBouquet.FlowerBouquetName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FlowerBouquet.FlowerBouquetName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FlowerBouquet.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FlowerBouquet.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FlowerBouquet.Price)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FlowerBouquet.Price)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FlowerBouquet.UnitsInStock)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FlowerBouquet.UnitsInStock)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FlowerBouquet.Supplier)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FlowerBouquet.Supplier.SupplierName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FlowerBouquet.Status)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FlowerBouquet.Status)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-page="./Index" class="btn btn-sm btn-outline-dark mr-1">Back to List</a> |
-    @if (HttpContext.Session.GetString("ROLE") == "ADMIN")
-    {
-        <a asp-page="./Edit" asp-route-id="@Model.FlowerBouquet?.FlowerBouquetId" class="btn btn-sm btn-outline-primary mr-1">Edit</a>
-    }
-    else
-    {
-        <a asp-page="#" asp-route-id="@Model.FlowerBouquet?.FlowerBouquetId" class="btn btn-sm btn-outline-primary mr-1">Add to cart</a>
-    }
-</div>
+<form method="post">
+    <div>
+        <h3>Details</h3>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FlowerBouquet.Category)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FlowerBouquet.Category.CategoryName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FlowerBouquet.FlowerBouquetName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FlowerBouquet.FlowerBouquetName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FlowerBouquet.Description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FlowerBouquet.Description)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FlowerBouquet.Price)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FlowerBouquet.Price)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FlowerBouquet.UnitsInStock)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FlowerBouquet.UnitsInStock)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FlowerBouquet.Supplier)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FlowerBouquet.Supplier.SupplierName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FlowerBouquet.Status)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FlowerBouquet.Status)
+            </dd>
+            @if (HttpContext.Session.GetString("ROLE") != "ADMIN")
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Input.Quantity)
+                </dt>
+                <dd class="col-sm-1">
+                    <input asp-for="Input.Quantity" class="form-control" placeholder="0" min="0" required />
+                </dd>
+            }
+        </dl>
+    </div>
+    <div>
+        <a asp-page="./Index" class="btn btn-sm btn-outline-dark mr-1">Back to List</a> |
+        @if (HttpContext.Session.GetString("ROLE") != "ADMIN")
+        {
+            <button asp-route-id="@Model.FlowerBouquet?.FlowerBouquetId" class="btn btn-sm btn-outline-primary mr-1">Add to Cart</button>
+        }
+        else
+        {
+            <a asp-page="./Edit" asp-route-id="@Model.FlowerBouquet?.FlowerBouquetId" class="btn btn-sm btn-outline-primary mr-1">Edit</a>
+        }
+    </div>
+</form>
