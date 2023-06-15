@@ -26,8 +26,13 @@ namespace FlowerBouquetManagement.Pages.Account
             _config = config;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("ROLE")))
+            {
+                return RedirectToPage("/Index");
+            }
+            return Page();
         }
 
         public IActionResult OnPost()
@@ -47,6 +52,7 @@ namespace FlowerBouquetManagement.Pages.Account
             }
             else if (account != null)
             {
+                HttpContext.Session.SetString("ROLE", "USER");
                 HttpContext.Session.SetInt32("USERID", account.CustomerId);
                 HttpContext.Session.SetString("FULLNAME", account.CustomerName);
                 return RedirectToPage("/Index");

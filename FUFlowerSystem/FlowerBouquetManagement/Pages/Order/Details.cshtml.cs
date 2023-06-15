@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using DataLayer.Models;
 using BusinessLayer.Repository;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FlowerBouquetManagement.Pages.Order
 {
@@ -15,13 +16,21 @@ namespace FlowerBouquetManagement.Pages.Order
 
         public IList<OrderDetail> OrderDetail { get;set; } = default!;
 
-        public async Task OnGetAsync(int id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            if (id == null || OrderDetail == null)
+            string role = HttpContext.Session.GetString("ROLE");
+            if (string.IsNullOrEmpty(role) || role != "ADMIN")
             {
-                //return NotFound();
+                return RedirectToPage("/Error");
+            }
+
+            if (id == null)
+            {
+                return NotFound();
             }
             OrderDetail = _repo.GetAll(id).ToList();
+
+            return Page();
         }
     }
 }

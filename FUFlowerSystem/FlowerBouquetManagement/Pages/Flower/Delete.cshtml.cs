@@ -19,6 +19,12 @@ namespace FlowerBouquetManagement.Pages.Flower
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            string role = HttpContext.Session.GetString("ROLE");
+            if (string.IsNullOrEmpty(role) || role != "ADMIN")
+            {
+                return RedirectToPage("/Error");
+            }
+
             if (id == null || _repo.GetAll == null)
             {
                 return NotFound();

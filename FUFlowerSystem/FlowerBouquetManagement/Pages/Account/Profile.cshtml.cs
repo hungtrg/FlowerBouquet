@@ -18,19 +18,25 @@ namespace FlowerBouquetManagement.Pages.Account
 
         public async Task<IActionResult> OnGetAsync()
         {
-            int id = (int)HttpContext.Session.GetInt32("USERID");
-            if (id == null || _repo.GetAll == null)
+            string role = HttpContext.Session.GetString("ROLE");
+            if (string.IsNullOrEmpty(role) || role == "USER")
             {
-                return NotFound();
+                int id = (int)HttpContext.Session.GetInt32("USERID");
+                if (id == null || _repo.GetAll == null)
+                {
+                    return NotFound();
+                }
+
+                var customer = _repo.Get((int)id);
+                if (customer == null)
+                {
+                    return NotFound();
+                }
+                Customer = customer;
+                return Page();
             }
 
-            var customer = _repo.Get((int)id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
-            Customer = customer;
-            return Page();
+            return RedirectToPage("/Error");
         }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -44,7 +50,8 @@ namespace FlowerBouquetManagement.Pages.Account
 
             _repo.UpdateCustomer(Customer);
 
-            return RedirectToPage("../Index");
+            ModelState.AddModelError("", "Update success!");
+            return Page();
         }
     }
 }

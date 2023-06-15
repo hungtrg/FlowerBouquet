@@ -80,6 +80,7 @@ namespace FlowerBouquetManagement.Pages.Flower
         }
 
         // Determine if the selected item is in the user's cart or not
+        // Return the item's index in the cart
         private int Exists(List<OrderDetail> cart, int id)
         {
             if (cart != null)

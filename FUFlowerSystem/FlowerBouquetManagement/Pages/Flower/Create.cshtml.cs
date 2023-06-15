@@ -17,6 +17,12 @@ namespace FlowerBouquetManagement.Pages.Flower
 
         public IActionResult OnGet()
         {
+            string role = HttpContext.Session.GetString("ROLE");
+            if (string.IsNullOrEmpty(role) || role != "ADMIN")
+            {
+                return RedirectToPage("/Error");
+            }
+
             ViewData["CategoryId"] = new SelectList(_repo.GetCategories().ToList(), "CategoryId", "CategoryName");
             ViewData["SupplierId"] = new SelectList(_repo.GetSuppliers().ToList(), "SupplierId", "SupplierName");
             return Page();

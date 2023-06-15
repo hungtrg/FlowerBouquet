@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BusinessLayer.Repository;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using BusinessLayer.Repository;
 
 namespace FlowerBouquetManagement.Pages.Customer
 {
@@ -15,6 +15,11 @@ namespace FlowerBouquetManagement.Pages.Customer
 
         public IActionResult OnGet()
         {
+            string role = HttpContext.Session.GetString("ROLE");
+            if (string.IsNullOrEmpty(role) || role != "ADMIN")
+            {
+                return RedirectToPage("/Error");
+            }
             return Page();
         }
 
