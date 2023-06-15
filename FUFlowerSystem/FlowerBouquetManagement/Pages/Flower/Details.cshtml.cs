@@ -18,6 +18,7 @@ namespace FlowerBouquetManagement.Pages.Flower
 
         [BindProperty]
         public ProductInput Input { get; set; }
+        public int? Stock { get; set; }
         public FlowerBouquet FlowerBouquet { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -41,8 +42,25 @@ namespace FlowerBouquetManagement.Pages.Flower
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
+            int? inCartQuantity = 0;
             var flower = _repo.Get((int)id);
             var cart = UtilExtensions.GetObjectFromJson<List<OrderDetail>>(HttpContext.Session, "CART");
+            Stock = flower.UnitsInStock;
+            
+            if (!cart.IsNullOrEmpty())
+            {
+                var cartFlower = cart.FirstOrDefault(c => c.FlowerBouquetId.Equals(flower.FlowerBouquetId));
+                if (cartFlower != null)
+                {
+                    inCartQuantity = cartFlower.Quanity;
+                }
+            }
+            if (Input.Quantity + inCartQuantity > Stock)
+            {
+                ViewData["ErrorMessage"] = "This quantity plus the quantity in your cart exceeds stock!";
+                FlowerBouquet = flower;
+                return Page();
+            }
 
             // Determine if are there any item in the user's cart or not
             if (cart.IsNullOrEmpty())
@@ -59,7 +77,7 @@ namespace FlowerBouquetManagement.Pages.Flower
             }
             else
             {
-                var checkCart = Exists(cart, flower.FlowerBouquetId);
+                var checkCart = GetCartItemIndex(cart, flower.FlowerBouquetId);
                 if (checkCart.Equals(-1))
                 {
                     cart.Add(new OrderDetail
@@ -81,7 +99,7 @@ namespace FlowerBouquetManagement.Pages.Flower
 
         // Determine if the selected item is in the user's cart or not
         // Return the item's index in the cart
-        private int Exists(List<OrderDetail> cart, int id)
+        private int GetCartItemIndex(List<OrderDetail> cart, int id)
         {
             if (cart != null)
             {

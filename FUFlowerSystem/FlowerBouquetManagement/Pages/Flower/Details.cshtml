@@ -55,10 +55,14 @@
             @if (HttpContext.Session.GetString("ROLE") != "ADMIN")
             {
                 <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Input.Quantity)
+                    <label asp-for="Input.Quantity" class="control-label"></label>
                 </dt>
-                <dd class="col-sm-1">
-                    <input asp-for="Input.Quantity" class="form-control" placeholder="0" min="0" required />
+                <dd class="col-sm">
+                    <input asp-for="Input.Quantity" class="col-sm-1 text-lg-center" placeholder="0" max="@Model.Stock" min="1" required />
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <span class="text-danger">@ViewBag.ErrorMessage</span>
+                    }
                 </dd>
             }
         </dl>

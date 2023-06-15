@@ -7,7 +7,9 @@ namespace FlowerBouquetManagement.Pages.Account
     {
         public RedirectToPageResult OnGet()
         {
-            HttpContext.Session.Clear();
+            HttpContext.Session.Remove("ROLE");
+            HttpContext.Session.Remove("USERID");
+            HttpContext.Session.Remove("FULLNAME");
             return RedirectToPage("../Index");
         }
     }
