@@ -31,7 +31,11 @@
             <th class="col-sm-1">
                 @Html.DisplayNameFor(model => model.Cart[0].Discount)
             </th>
-            <th></th>
+            <th>
+                <form method="post">
+                    <button asp-page-handler="Clear" class="btn btn-sm btn-danger col-8 mr-1">Clear Cart</button>
+                </form>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -75,9 +79,7 @@
             <th>@total$</th>
             <td></td>
             <td>
-                <form method="post">
-                    <button asp-page-handler="Clear" class="btn btn-sm btn-outline-danger mr-1">Clear Cart</button>
-                </form>
+                <a asp-page="./Checkout" class="btn btn-sm btn-success col-8 mr-1">Checkout</a>
             </td>
         </tr>
     </tbody>

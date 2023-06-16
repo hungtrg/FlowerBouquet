@@ -1,0 +1,113 @@
+﻿@page
+@model FlowerBouquetManagement.Pages.Cart.CheckoutModel
+
+@{
+    ViewData["Title"] = "Checkout";
+    var count = 1;
+    decimal discount = 0;
+    decimal total = 0;
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <h1>Checkout</h1>
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert-danger text-lg-end">@TempData["ErrorMessage"]</div>
+        }
+        <table class="table text-lg-center">
+            <thead>
+                <tr>
+                    <th class="col-sm-1">
+                        Items
+                    </th>
+                    <th class="col-sm-5 text-lg-start">
+                        @Html.DisplayNameFor(model => model.Cart[0].FlowerBouquet)
+                    </th>
+                    <th class="col-sm-1">
+                        @Html.DisplayNameFor(model => model.Cart[0].Quanity)
+                    </th>
+                    <th class="col-sm-1">
+                        @Html.DisplayNameFor(model => model.Cart[0].Price)
+                    </th>
+                    <th class="col-sm-1">
+                        @Html.DisplayNameFor(model => model.Cart[0].Discount)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Cart)
+                {
+                    <tr>
+                        <td class="col-sm-1">
+                            @count
+                        </td>
+                        <td class="col-sm-5 text-lg-start">
+                            @Html.DisplayFor(modelItem => Model.FlowerName[count - 1])
+                        </td>
+                        <td class="col-sm-1">
+                            @Html.DisplayFor(modelItem => item.Quanity)
+                        </td>
+                        <td class="col-sm-1">
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td class="col-sm-1">
+                            @Html.DisplayFor(modelItem => item.Discount)
+                        </td>
+                    </tr>
+                    count++;
+                    @if (item.Discount != null)
+                    {
+                        discount = item.Discount.Value;
+                    }
+                    total += (item.Price.Value - discount) * item.Quanity.Value;
+                }
+                <tr class="bg-light">
+                    <td></td>
+                    <td></td>
+                    <td class="text-lg-start">Freight: </td>
+                    <td class="text-lg-end">@Model.Freight$</td>
+                    <td></td>
+                </tr>
+                <tr class="bg-light">
+                    <td></td>
+                    <td></td>
+                    <th class ="text-lg-start">Total: </th>
+                    <th class="text-lg-end">@(total + Model.Freight.Value)$</th>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4">
+        <hr />
+        <h1 class="text-lg-center">Delivery To</h1>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Customer.CustomerId" />
+        <div class="form-group">
+            <label asp-for="Customer.CustomerName" class="control-label"></label>
+            <input asp-for="Customer.CustomerName" class="form-control" readonly required />
+            <span asp-validation-for="Customer.CustomerName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Customer.Email" class="control-label"></label>
+            <input asp-for="Customer.Email" class="form-control" readonly required />
+            <span asp-validation-for="Customer.Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Customer.City" class="control-label"></label>
+            <input asp-for="Customer.City" class="form-control" required />
+            <span asp-validation-for="Customer.City" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Customer.Country" class="control-label"></label>
+            <input asp-for="Customer.Country" class="form-control" required />
+            <span asp-validation-for="Customer.Country" class="text-danger"></span>
+        </div>
+        <div class="form-group mt-2">
+            <a asp-page="./Cart" class="btn btn-sm btn-outline-secondary mr-1">Back</a>
+            <a asp-page="./Checkout" class="btn btn-sm btn-success col-8 ms-5 ">Order</a>
+        </div>
+    </div>
+</div>
