@@ -56,8 +56,8 @@
                 </td>
                 <td>
                     <button asp-page-handler="Update" asp-route-id="@item.FlowerBouquetId" class="btn btn-sm btn-outline-primary mr-1">Edit</button>
-                    <a asp-page-handler="" asp-route-id="@item.FlowerBouquetId" class="btn btn-sm btn-outline-info mr-1">Details</a>
-                    <a asp-page-handler="" asp-route-id="@item.FlowerBouquetId" class="btn btn-sm btn-outline-danger mr-1">Delete</a>
+                    <a asp-page="../Flower/Details" asp-route-id="@item.FlowerBouquetId" class="btn btn-sm btn-outline-info mr-1">Details</a>
+                    <button asp-page-handler="Delete" asp-route-id="@item.FlowerBouquetId" class="btn btn-sm btn-outline-danger mr-1">Delete</button>
                 </td>
                 </form>
             </tr>
@@ -74,7 +74,11 @@
             <th>Total: </th>
             <th>@total$</th>
             <td></td>
-            <td></td>
+            <td>
+                <form method="post">
+                    <button asp-page-handler="Clear" class="btn btn-sm btn-outline-danger mr-1">Clear Cart</button>
+                </form>
+            </td>
         </tr>
     </tbody>
 </table>

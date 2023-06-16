@@ -71,6 +71,21 @@ namespace FlowerBouquetManagement.Pages.Cart
             return RedirectToPage();
         }
 
+        public async Task<IActionResult> OnPostDeleteAsync(int id)
+        {
+            var cartJson = UtilExtensions.GetObjectFromJson<List<OrderDetail>>(HttpContext.Session, "CART");
+            var checkCart = GetCartItemIndex(cartJson, id);
+            cartJson.Remove(cartJson[checkCart]);
+            UtilExtensions.SetObjectAsJson(HttpContext.Session, "CART", cartJson);
+            return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnPostClearAsync()
+        {
+            HttpContext.Session.Remove("CART");
+            return RedirectToPage();
+        }
+
         // Determine if the selected item is in the user's cart or not
         // Return the item's index in the cart
         private int GetCartItemIndex(List<OrderDetail> cart, int id)
