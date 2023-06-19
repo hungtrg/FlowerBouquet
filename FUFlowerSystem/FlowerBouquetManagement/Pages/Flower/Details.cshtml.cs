@@ -10,10 +10,12 @@ namespace FlowerBouquetManagement.Pages.Flower
     public class DetailsModel : PageModel
     {
         private readonly IFlowerBouquetRepository _repo;
+        private readonly ICartService _service;
 
-        public DetailsModel(IFlowerBouquetRepository repo)
+        public DetailsModel(IFlowerBouquetRepository repo, ICartService service)
         {
             _repo = repo;
+            _service = service;
         }
 
         [BindProperty]
@@ -44,12 +46,11 @@ namespace FlowerBouquetManagement.Pages.Flower
         {
             int? inCartQuantity = 0;
             var flower = _repo.Get((int)id);
-            var cart = UtilExtensions.GetObjectFromJson<List<OrderDetail>>(HttpContext.Session, "CART");
             Stock = flower.UnitsInStock;
-            
-            if (!cart.IsNullOrEmpty())
+
+            if (!_service.GetCart().IsNullOrEmpty())
             {
-                var cartFlower = cart.FirstOrDefault(c => c.FlowerBouquetId.Equals(flower.FlowerBouquetId));
+                var cartFlower = _service.GetCart().FirstOrDefault(c => c.FlowerBouquetId.Equals(flower.FlowerBouquetId));
                 if (cartFlower != null)
                 {
                     inCartQuantity = cartFlower.Quantity;
@@ -62,56 +63,8 @@ namespace FlowerBouquetManagement.Pages.Flower
                 return Page();
             }
 
-            // Determine if are there any item in the user's cart or not
-            if (cart.IsNullOrEmpty())
-            {
-                cart = new List<OrderDetail>();
-                cart.Add(new OrderDetail
-                {
-                    FlowerBouquetId = flower.FlowerBouquetId,
-                    Price = flower.Price,
-                    Quantity = Input.Quantity,
-                    Discount = 0
-                });
-                UtilExtensions.SetObjectAsJson(HttpContext.Session, "CART", cart);
-            }
-            else
-            {
-                var checkCart = GetCartItemIndex(cart, flower.FlowerBouquetId);
-                if (checkCart.Equals(-1))
-                {
-                    cart.Add(new OrderDetail
-                    {
-                        FlowerBouquetId = flower.FlowerBouquetId,
-                        Price = flower.Price,
-                        Quantity = Input.Quantity,
-                        Discount = 0,
-                    });
-                }
-                else
-                {
-                    cart[checkCart].Quantity += Input.Quantity;
-                }
-                UtilExtensions.SetObjectAsJson(HttpContext.Session, "CART", cart);
-            }
+            _service.AddToCart(flower, Input.Quantity);
             return Redirect("../Cart/Cart");
-        }
-
-        // Determine if the selected item is in the user's cart or not
-        // Return the item's index in the cart
-        private int GetCartItemIndex(List<OrderDetail> cart, int id)
-        {
-            if (cart != null)
-            {
-                for (int i = 0; i < cart.Count; i++)
-                {
-                    if (cart[i].FlowerBouquetId.Equals(id))
-                    {
-                        return i;
-                    }
-                }
-            }
-            return -1;
         }
     }
 }

@@ -12,11 +12,13 @@ namespace FlowerBouquetManagement.Pages.Cart
     {
         private readonly ICustomerRepository _customerRepo;
         private readonly IFlowerBouquetRepository _flowerRepo;
+        private readonly ICartService _service;
 
-        public CheckoutModel(IFlowerBouquetRepository flowerRepo, ICustomerRepository customerRepo)
+        public CheckoutModel(IFlowerBouquetRepository flowerRepo, ICustomerRepository customerRepo, ICartService service)
         {
             _flowerRepo = flowerRepo;
             _customerRepo = customerRepo;
+            _service = service;
         }
 
         [BindProperty]
@@ -26,36 +28,19 @@ namespace FlowerBouquetManagement.Pages.Cart
         public IList<OrderDetail> Cart { get; set; } = default!;
         public async Task OnGetAsync()
         {
-            int id = (int)HttpContext.Session.GetInt32("USERID");
+            int? id = HttpContext.Session.GetInt32("USERID");
             var customer = _customerRepo.Get((int)id);
             Freight = 30;
             Customer = customer;
-            var cartJson = UtilExtensions.GetObjectFromJson<List<OrderDetail>>(HttpContext.Session, "CART");
             List<string> flowerName = new List<string>();
-            if (cartJson.IsNullOrEmpty())
+            var cart = _service.GetCart();
+            for (int i = 0; i < cart.Count; i++)
             {
-                // Cart is empty
-                Cart = new List<OrderDetail>();
+                var item = _flowerRepo.Get(cart[i].FlowerBouquetId);
+                flowerName.Add(item.FlowerBouquetName);
             }
-            else
-            {
-                try
-                {
-                    for (int i = 0; i < cartJson.Count; i++)
-                    {
-                        var item = _flowerRepo.Get(cartJson[i].FlowerBouquetId);
-                        flowerName.Add(item.FlowerBouquetName);
-                    }
-                    Cart = cartJson;
-                    FlowerName = flowerName;
-                }
-                catch (JsonException ex)
-                {
-                    // Error deserializing cart from session state
-                    Cart = new List<OrderDetail>();
-                    // Log or handle the exception as appropriate
-                }
-            }
+            Cart = cart;
+            FlowerName = flowerName;
         }
     }
 }

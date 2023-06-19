@@ -3,18 +3,18 @@ using BusinessLayer.UtilExtensions;
 using DataLayer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 
 namespace FlowerBouquetManagement.Pages.Cart
 {
     public class CartModel : PageModel
     {
         private readonly IFlowerBouquetRepository _repo;
+        private readonly ICartService _service;
 
-        public CartModel(IFlowerBouquetRepository repo)
+        public CartModel(IFlowerBouquetRepository repo, ICartService service)
         {
             _repo = repo;
+            _service = service;
         }
 
         [BindProperty]
@@ -25,82 +25,39 @@ namespace FlowerBouquetManagement.Pages.Cart
 
         public async Task OnGetAsync()
         {
-            var cartJson = UtilExtensions.GetObjectFromJson<List<OrderDetail>>(HttpContext.Session, "CART");
             List<string> flowerName = new List<string>();
-            if (cartJson.IsNullOrEmpty())
+            var cart = _service.GetCart();
+            for (int i = 0; i < cart.Count; i++)
             {
-                // Cart is empty
-                Cart = new List<OrderDetail>();
+                var item = _repo.Get(cart[i].FlowerBouquetId);
+                flowerName.Add(item.FlowerBouquetName);
             }
-            else
-            {
-                try
-                {
-                    for (int i = 0; i < cartJson.Count; i++)
-                    {
-                        var item = _repo.Get(cartJson[i].FlowerBouquetId);
-                        flowerName.Add(item.FlowerBouquetName);
-                    }
-                    Cart = cartJson;
-                    FlowerName = flowerName;
-                }
-                catch (JsonException ex)
-                {
-                    // Error deserializing cart from session state
-                    Cart = new List<OrderDetail>();
-                    // Log or handle the exception as appropriate
-                }
-            }
+            Cart = cart;
+            FlowerName = flowerName;
         }
 
         public async Task<IActionResult> OnPostUpdateAsync(int id)
         {
-            var cartJson = UtilExtensions.GetObjectFromJson<List<OrderDetail>>(HttpContext.Session, "CART");
-            var checkCart = GetCartItemIndex(cartJson, id);
             Stock = _repo.Get((int)id).UnitsInStock;
             if (Input.Quantity > Stock)
             {
                 TempData["ErrorMessage"] = "This quantity plus the quantity in your cart exceeds stock!";
                 return RedirectToPage();
             }
-            if (!checkCart.Equals((-1)))
-            {
-                cartJson[checkCart].Quantity = Input.Quantity;
-            }
-            UtilExtensions.SetObjectAsJson(HttpContext.Session, "CART", cartJson);
+            _service.UpdateCartItemQuantity(id, Input.Quantity);
             return RedirectToPage();
         }
 
         public async Task<IActionResult> OnPostDeleteAsync(int id)
         {
-            var cartJson = UtilExtensions.GetObjectFromJson<List<OrderDetail>>(HttpContext.Session, "CART");
-            var checkCart = GetCartItemIndex(cartJson, id);
-            cartJson.Remove(cartJson[checkCart]);
-            UtilExtensions.SetObjectAsJson(HttpContext.Session, "CART", cartJson);
+            _service.RemoveCartItem(id);
             return RedirectToPage();
         }
 
         public async Task<IActionResult> OnPostClearAsync()
         {
-            HttpContext.Session.Remove("CART");
+            _service.ClearCart();
             return RedirectToPage();
-        }
-
-        // Determine if the selected item is in the user's cart or not
-        // Return the item's index in the cart
-        private int GetCartItemIndex(List<OrderDetail> cart, int id)
-        {
-            if (cart != null)
-            {
-                for (int i = 0; i < cart.Count; i++)
-                {
-                    if (cart[i].FlowerBouquetId.Equals(id))
-                    {
-                        return i;
-                    }
-                }
-            }
-            return -1;
         }
     }
 }

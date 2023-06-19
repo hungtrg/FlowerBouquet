@@ -1,4 +1,5 @@
 using BusinessLayer.Repository;
+using BusinessLayer.UtilExtensions;
 using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,9 @@ builder.Services.AddSingleton<ICustomerRepository, CustomerRepository>();
 builder.Services.AddSingleton<IFlowerBouquetRepository, FlowerBouquetRepository>();
 builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
 builder.Services.AddSingleton<IOrderDetailRepository, OrderDetailRepository>();
+
+builder.Services.AddSingleton<ICartService, CartService>();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSession(opt =>
 {
