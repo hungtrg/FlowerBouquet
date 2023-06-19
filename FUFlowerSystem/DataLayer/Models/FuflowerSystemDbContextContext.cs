@@ -92,7 +92,7 @@ public partial class FuflowerSystemDbContextContext : DbContext
             .UseIdentityColumn().HasColumnName("OrderId").ValueGeneratedOnAdd();
 
             entity.Property(e => e.DeliveryDate).HasColumnType("date");
-            entity.Property(e => e.Freight).HasMaxLength(50);
+            entity.Property(e => e.DeliveryTo).HasMaxLength(250);
             entity.Property(e => e.OrderDate).HasColumnType("date");
             entity.Property(e => e.Total).HasColumnType("numeric(18, 0)");
 

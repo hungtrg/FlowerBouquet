@@ -65,7 +65,7 @@ namespace FlowerBouquetManagement.Pages.Cart
             }
             if (!checkCart.Equals((-1)))
             {
-                cartJson[checkCart].Quanity = Input.Quantity;
+                cartJson[checkCart].Quantity = Input.Quantity;
             }
             UtilExtensions.SetObjectAsJson(HttpContext.Session, "CART", cartJson);
             return RedirectToPage();

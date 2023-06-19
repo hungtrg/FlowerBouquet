@@ -19,7 +19,7 @@
                 @Html.DisplayNameFor(model => model.OrderDetail[0].FlowerBouquet)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OrderDetail[0].Quanity)
+                @Html.DisplayNameFor(model => model.OrderDetail[0].Quantity)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.OrderDetail[0].Price)
@@ -41,7 +41,7 @@
                     @Html.DisplayFor(modelItem => item.FlowerBouquet.FlowerBouquetName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Quanity)
+                    @Html.DisplayFor(modelItem => item.Quantity)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Price)
@@ -55,7 +55,7 @@
             {
                 discount = item.Discount.Value;
             }
-            total += (item.Price.Value - discount) * item.Quanity.Value;
+            total += (item.Price.Value - discount) * item.Quantity.Value;
         }
         <tr class="bg-light">
             <td></td>

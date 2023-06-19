@@ -23,7 +23,7 @@
                 @Html.DisplayNameFor(model => model.Cart[0].FlowerBouquet)
             </th>
             <th class="col-sm-1">
-                @Html.DisplayNameFor(model => model.Cart[0].Quanity)
+                @Html.DisplayNameFor(model => model.Cart[0].Quantity)
             </th>
             <th class="col-sm-1">
                 @Html.DisplayNameFor(model => model.Cart[0].Price)
@@ -50,7 +50,7 @@
                 </td>
                 <form method="post">
                 <td class="col-sm-1">
-                    <input asp-for="Input.Quantity" class="form-control" value="@item.Quanity" max="@Model.Stock" min="1" required />
+                    <input asp-for="Input.Quantity" class="form-control" value="@item.Quantity" max="@Model.Stock" min="1" required />
                 </td>
                 <td class="col-sm-1">
                         @Html.DisplayFor(modelItem => item.Price)
@@ -70,7 +70,7 @@
             {
                 discount = item.Discount.Value;
             }
-            total += (item.Price.Value - discount) * item.Quanity.Value;
+            total += (item.Price.Value - discount) * item.Quantity.Value;
         }
         <tr class="bg-light">
             <td></td>

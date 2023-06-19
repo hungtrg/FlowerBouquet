@@ -13,7 +13,7 @@ public partial class Order
 
     public DateTime? DeliveryDate { get; set; }
 
-    public string? Freight { get; set; }
+    public string? DeliveryTo { get; set; }
 
     public decimal? Total { get; set; }
 

@@ -52,7 +52,7 @@ namespace FlowerBouquetManagement.Pages.Flower
                 var cartFlower = cart.FirstOrDefault(c => c.FlowerBouquetId.Equals(flower.FlowerBouquetId));
                 if (cartFlower != null)
                 {
-                    inCartQuantity = cartFlower.Quanity;
+                    inCartQuantity = cartFlower.Quantity;
                 }
             }
             if (Input.Quantity + inCartQuantity > Stock)
@@ -70,7 +70,7 @@ namespace FlowerBouquetManagement.Pages.Flower
                 {
                     FlowerBouquetId = flower.FlowerBouquetId,
                     Price = flower.Price,
-                    Quanity = Input.Quantity,
+                    Quantity = Input.Quantity,
                     Discount = 0
                 });
                 UtilExtensions.SetObjectAsJson(HttpContext.Session, "CART", cart);
@@ -84,13 +84,13 @@ namespace FlowerBouquetManagement.Pages.Flower
                     {
                         FlowerBouquetId = flower.FlowerBouquetId,
                         Price = flower.Price,
-                        Quanity = Input.Quantity,
+                        Quantity = Input.Quantity,
                         Discount = 0,
                     });
                 }
                 else
                 {
-                    cart[checkCart].Quanity += Input.Quantity;
+                    cart[checkCart].Quantity += Input.Quantity;
                 }
                 UtilExtensions.SetObjectAsJson(HttpContext.Session, "CART", cart);
             }
