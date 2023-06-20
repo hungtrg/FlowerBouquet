@@ -30,8 +30,12 @@ namespace FlowerBouquetManagement.Pages.Cart
         [BindProperty]
         public decimal? Total { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("ROLE")))
+            {
+                return RedirectToPage("../Account/Login");
+            }
             int? id = HttpContext.Session.GetInt32("USERID");
             var customer = _customerRepo.Get((int)id);
 
@@ -48,6 +52,7 @@ namespace FlowerBouquetManagement.Pages.Cart
             FlowerName = flowerName;
             ShippingFee = _orderRepo.GetShippingFee(customer.City);
             Total = _orderRepo.GetTotalFee((decimal)ShippingFee, cart);
+            return Page();
         }
 
         public async Task<IActionResult> OnPostOrderAsync()
@@ -59,7 +64,7 @@ namespace FlowerBouquetManagement.Pages.Cart
             _orderRepo.AddOrder(customer, cart);
             _flowerRepo.UpdateFlowerStockQuantity(cart);
             _service.ClearCart();
-            return RedirectToPage();
+            return RedirectToPage("../Order/MyOrder");
         }
     }
 }

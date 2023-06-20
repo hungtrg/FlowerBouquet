@@ -23,8 +23,12 @@ namespace FlowerBouquetManagement.Pages.Cart
         public IList<string> FlowerName { get; set; }
         public IList<OrderDetail> Cart { get; set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("ROLE")))
+            {
+                return RedirectToPage("../Account/Login");
+            }
             List<string> flowerName = new List<string>();
             var cart = _service.GetCart();
             for (int i = 0; i < cart.Count; i++)
@@ -34,6 +38,7 @@ namespace FlowerBouquetManagement.Pages.Cart
             }
             Cart = cart;
             FlowerName = flowerName;
+            return Page();
         }
 
         public async Task<IActionResult> OnPostUpdateAsync(int id)

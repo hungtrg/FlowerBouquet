@@ -19,7 +19,7 @@ namespace FlowerBouquetManagement.Pages.Order
         public async Task<IActionResult> OnGetAsync(int id)
         {
             string role = HttpContext.Session.GetString("ROLE");
-            if (string.IsNullOrEmpty(role) || role != "ADMIN")
+            if (string.IsNullOrEmpty(role))
             {
                 return RedirectToPage("/Error");
             }

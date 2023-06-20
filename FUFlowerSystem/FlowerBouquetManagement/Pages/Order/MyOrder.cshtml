@@ -1,0 +1,91 @@
+﻿@page
+@model FlowerBouquetManagement.Pages.Order.MyOrderModel
+
+@{
+    ViewData["Title"] = "MyOrder";
+}
+
+<form method="get" class="form-inline mb-3">
+    <div class="row mb-3">
+        <div class="col-5">
+            <h2>My Order</h2>
+        </div>
+        <div class="col-5">
+            <select asp-for="Filter" class="form-control">
+                <option value="">Filter by</option>
+                <option value="0">To Ship</option>
+                <option value="1">To Receive</option>
+                <option value="2">Completed</option>
+                <option value="3">Cancel</option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-outline-dark">Filter</button>
+        </div>
+    </div>
+</form>
+@if (Model.Order.Count == 0)
+{
+    <div class="alert alert-warning">No orders found.</div>
+}
+else
+{
+    <table class="table text-lg-center">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Order[0].OrderId)</th>
+                <th>@Html.DisplayNameFor(model => model.Order[0].OrderDate)</th>
+                <th>@Html.DisplayNameFor(model => model.Order[0].DeliveryDate)</th>
+                <th>@Html.DisplayNameFor(model => model.Order[0].Freight)</th>
+                <th>@Html.DisplayNameFor(model => model.Order[0].Total)</th>
+                <th>@Html.DisplayNameFor(model => model.Order[0].Status)</th>
+                <th>Mark as</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Order)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.OrderId)</td>
+                    <td>@Html.DisplayFor(modelItem => item.OrderDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.DeliveryDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Freight)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Total)</td>
+                    <td>
+                        @switch (item.Status)
+                        {
+                            case 1:
+                                <label class="text-info">To Receive</label>
+                                break;
+                            case 2:
+                                <label class="text-success">Completed</label>
+                                break;
+                            case 3:
+                                <label class="text-danger">Cancel</label>
+                                break;
+                            default:
+                                <label class="text-muted">To Ship</label>
+                                break;
+                        }
+                    </td>
+                    <td>
+                        <form method="post">
+                            @{
+                                if (item.Status.Equals(1))
+                                {
+                                    <button asp-page-handler="Update" asp-route-id="@item.OrderId" asp-route-status="2" class="btn btn-sm btn-outline-success col-9 mr-1">Completed</button>
+                                }
+                                if (item.Status.Equals(0))
+                                {
+                                    <button asp-page-handler="Update" asp-route-id="@item.OrderId" asp-route-status="3" class="btn btn-sm btn-outline-danger col-9 mr-1">Cancel</button>
+                                }
+                            }
+                        </form>
+                    </td>
+                    <td><a asp-page="./Details" asp-route-id="@item.OrderId" class="btn btn-sm btn-info mr-1">Details</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

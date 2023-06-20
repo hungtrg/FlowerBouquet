@@ -67,5 +67,12 @@
         </tr>
     </tbody>
 </table>
-<a asp-page="./Index" class="btn btn-sm btn-outline-secondary mr-1">Back</a>
+@if (HttpContext.Session.GetString("ROLE").Equals("ADMIN"))
+{
+    <a asp-page="./Index" class="btn btn-sm btn-outline-secondary mr-1">Back</a>
+}
+else
+{
+    <a asp-page="./MyOrder" class="btn btn-sm btn-outline-secondary mr-1">Back</a>
+}
 

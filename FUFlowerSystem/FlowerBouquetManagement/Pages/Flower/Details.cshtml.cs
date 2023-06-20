@@ -44,6 +44,10 @@ namespace FlowerBouquetManagement.Pages.Flower
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("ROLE")))
+            {
+                return RedirectToPage("../Account/Login");
+            }
             int? inCartQuantity = 0;
             var flower = _repo.Get((int)id);
             Stock = flower.UnitsInStock;
