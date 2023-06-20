@@ -162,5 +162,29 @@ namespace BusinessLayer.DAO
             }
             return list;
         }
+
+        public bool UpdateFlowerStockQuantity(List<OrderDetail> cart)
+        {
+            bool result;
+            try
+            {
+                foreach (var item in cart)
+                {
+                    var flower = _context.FlowerBouquets.Find(item.FlowerBouquetId);
+                    flower.UnitsInStock -= item.Quantity;
+                    if (flower.UnitsInStock == 0)
+                    {
+                        flower.Status = false;
+                    }
+                }
+                _context.SaveChanges();
+                result = true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return result;
+        }
     }
 }

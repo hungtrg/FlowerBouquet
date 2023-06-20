@@ -11,7 +11,7 @@
             <h2>Flower List</h2>
         </div>
         <div class="col-5">
-            <input class="form-control" type="text" placeholder="Search..." aria-label="Search" asp-for="search">
+            <input class="form-control" type="text" placeholder="Search name..." aria-label="Search" asp-for="search">
         </div>
         <div class="col-auto">
             <button type="submit" class="btn btn-outline-secondary">Search</button>
@@ -38,7 +38,7 @@ else
                     @Html.DisplayNameFor(model => model.Order[0].OrderDate)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Order[0].DeliveryTo)
+                    @Html.DisplayNameFor(model => model.Order[0].Freight)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Order[0].Total)
@@ -66,7 +66,7 @@ else
                         @Html.DisplayFor(modelItem => item.OrderDate)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.DeliveryTo)
+                        @Html.DisplayFor(modelItem => item.Freight)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Total)
@@ -75,7 +75,21 @@ else
                         @Html.DisplayFor(modelItem => item.DeliveryDate)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Status)
+                        @switch (item.Status)
+                        {
+                            case 1:
+                                <label class="text-info">To Receive</label>
+                                break;
+                            case 2:
+                                <label class="text-success">Completed</label>
+                                break;
+                            case 3:
+                                <label class="text-danger">Cancel</label>
+                                break;
+                            default:
+                                <label class="text-muted">To Ship</label>
+                                break;
+                        }
                     </td>
                     <td>
                         <a asp-page="./Edit" asp-route-id="@item.OrderId" class="btn btn-sm btn-primary mr-1">Edit</a>

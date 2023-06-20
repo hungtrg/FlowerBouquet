@@ -67,18 +67,24 @@ namespace BusinessLayer.DAO
             return order;
         }
 
-        public bool AddOrder(Order order)
+        public bool AddOrder(Customer customer, List<OrderDetail> cart)
         {
             bool result = false;
             try
             {
-                Order o = Get(order.OrderId);
-                if (o == null)
+                var order = new Order
                 {
-                    _context.Orders.Add(order);
-                    _context.SaveChanges();
-                    result = true;
-                }
+                    CustomerId = customer.CustomerId,
+                    OrderDetails = cart,
+                    OrderDate = DateTime.Now,
+                    DeliveryDate = DateTime.Now.AddDays(3),
+                    Freight = GetShippingFee(customer.City),
+                    Status = 0,
+                    Total = GetTotalFee(GetShippingFee(customer.City), cart)
+                };
+                _context.Orders.Add(order);
+                _context.SaveChanges();
+                result = true;
             }
             catch (Exception)
             {
@@ -126,6 +132,40 @@ namespace BusinessLayer.DAO
                 throw;
             }
             return result;
+        }
+
+        public decimal GetShippingFee(string deliveryTo)
+        {
+            const decimal intercityDeliveryFee = 30.0m;
+            const decimal intracityDeliveryFee = 20.0m;
+
+            if (string.IsNullOrWhiteSpace(deliveryTo))
+            {
+                return 0.0m;
+            }
+
+            string deliveryToUpperCase = deliveryTo.ToUpper().Replace(" ", "");
+            if (deliveryToUpperCase.Contains("HOCHIMINH"))
+            {
+                return intracityDeliveryFee;
+            }
+
+            return intercityDeliveryFee;
+        }
+
+        public decimal GetTotalFee(decimal shippingFee, List<OrderDetail> cart)
+        {
+            decimal? total = decimal.Zero;
+
+            foreach (var item in cart)
+            {
+                decimal discount = item.Discount ?? 0m; // Use 0 if Discount is null
+                decimal? itemTotal = (item.Price - discount) * item.Quantity;
+                total += itemTotal;
+            }
+
+            total += shippingFee;
+            return decimal.Round(total ?? 0m, 2);
         }
     }
 }

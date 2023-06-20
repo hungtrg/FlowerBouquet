@@ -9,6 +9,7 @@ namespace BusinessLayer.Repository
         IEnumerable<FlowerBouquet> Search(string search);
         bool AddFlowerBouquet(FlowerBouquet flower);
         bool UpdateFlowerBouquet(FlowerBouquet flower);
+        bool UpdateFlowerStockQuantity(List<OrderDetail> cart);
         bool RemoveFlowerBouquet(int id);
         IEnumerable<Category> GetCategories();
         IEnumerable<Supplier> GetSuppliers();
@@ -31,5 +32,7 @@ namespace BusinessLayer.Repository
         public IEnumerable<FlowerBouquet> Search(string search) => FlowerBouquetDAO.Instance.Search(search);
 
         public bool UpdateFlowerBouquet(FlowerBouquet flower) => FlowerBouquetDAO.Instance.UpdateFlowerBouquet(flower);
+
+        public bool UpdateFlowerStockQuantity(List<OrderDetail> cart) => FlowerBouquetDAO.Instance.UpdateFlowerStockQuantity(cart);
     }
 }

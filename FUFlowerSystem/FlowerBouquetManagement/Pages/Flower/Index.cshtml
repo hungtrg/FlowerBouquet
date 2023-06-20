@@ -81,7 +81,16 @@ else
                         @Html.DisplayFor(modelItem => item.Supplier.SupplierName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Status)
+                        @{
+                            if (item.Status == true)
+                            {
+                                <label class="text-success">Available</label>
+                            }
+                            else
+                            {
+                                <label class="text-muted">Out stock</label>
+                            }
+                        }
                     </td>
                     @if (Model.role == "ADMIN")
                     {

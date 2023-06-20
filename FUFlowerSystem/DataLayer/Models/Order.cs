@@ -13,11 +13,11 @@ public partial class Order
 
     public DateTime? DeliveryDate { get; set; }
 
-    public string? DeliveryTo { get; set; }
+    public decimal? Freight { get; set; }
 
     public decimal? Total { get; set; }
 
-    public bool? Status { get; set; }
+    public int? Status { get; set; }
 
     public virtual Customer? Customer { get; set; }
 

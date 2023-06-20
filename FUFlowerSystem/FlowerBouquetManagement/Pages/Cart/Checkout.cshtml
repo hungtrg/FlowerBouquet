@@ -4,8 +4,6 @@
 @{
     ViewData["Title"] = "Checkout";
     var count = 1;
-    decimal discount = 0;
-    decimal total = 0;
 }
 
 <div class="row">
@@ -56,24 +54,19 @@
                         </td>
                     </tr>
                     count++;
-                    @if (item.Discount != null)
-                    {
-                        discount = item.Discount.Value;
-                    }
-                    total += (item.Price.Value - discount) * item.Quantity.Value;
                 }
                 <tr class="bg-light">
                     <td></td>
                     <td></td>
                     <td class="text-lg-start">Freight: </td>
-                    <td class="text-lg-end">@Model.Freight$</td>
+                    <td class="text-lg-end">@Model.ShippingFee$</td>
                     <td></td>
                 </tr>
                 <tr class="bg-light">
                     <td></td>
                     <td></td>
-                    <th class ="text-lg-start">Total: </th>
-                    <th class="text-lg-end">@(total + Model.Freight.Value)$</th>
+                    <th class="text-lg-start">Total: </th>
+                    <th class="text-lg-end">@Model.Total$</th>
                     <td></td>
                 </tr>
             </tbody>
@@ -96,18 +89,20 @@
             <span asp-validation-for="Customer.Email" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Customer.City" class="control-label"></label>
-            <input asp-for="Customer.City" class="form-control" required />
-            <span asp-validation-for="Customer.City" class="text-danger"></span>
-        </div>
-        <div class="form-group">
             <label asp-for="Customer.Country" class="control-label"></label>
-            <input asp-for="Customer.Country" class="form-control" required />
+            <input asp-for="Customer.Country" class="form-control" readonly required />
             <span asp-validation-for="Customer.Country" class="text-danger"></span>
         </div>
+        <div class="form-group">
+            <label asp-for="Customer.City" class="control-label"></label>
+            <input asp-for="Customer.City" class="form-control" readonly required />
+            <span asp-validation-for="Customer.City" class="text-danger"></span>
+        </div>
         <div class="form-group mt-2">
-            <a asp-page="./Cart" class="btn btn-sm btn-outline-secondary mr-1">Back</a>
-            <a asp-page="./Checkout" class="btn btn-sm btn-success col-8 ms-5 ">Order</a>
+            <form method="post" asp-page-handler="Order">
+                <a asp-page="./Cart" class="btn btn-sm btn-outline-secondary mr-1">Back</a>
+                <button type="submit" class="btn btn-sm btn-success col-8 ms-5 ">Order</button>
+            </form>
         </div>
     </div>
 </div>
